@@ -41,13 +41,13 @@ class Category(models.Model):
 
 class Course(models.Model):
     name = models.CharField(max_length=32)
-    teachers = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name= 'teacher')
-    students = models.ForeignKey(Student, on_delete=models.CASCADE, related_name= 'student')
+    teachers = models.ManyToManyField(Teacher, related_name= 'teacher')
+    students = models.ManyToManyField(Student, related_name= 'student')
     date_created = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=False)
     duration = models.TimeField(null=True, blank= True)
     price = models.BigIntegerField()
-    Categories = models.ForeignKey(to=Category, on_delete= models.CASCADE, related_name= 'Categories', null= True, blank= True)
+    Categories = models.ManyToManyField(to=Category, related_name= 'Categories', null= True, blank= True)
 
     def __str__(self):
         return f"{self.name}"
