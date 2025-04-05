@@ -16,7 +16,7 @@ try:
 except ImportError:
     pass
 
-
+SECRET_KEY = 'django-insecure-+xwhm++cbvd0gi$ak@=fm%xwl8&5ywc*s=nl9hu)f4zu*+wnck'
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'user'
+    'user',
+    'course.apps.CourseConfig',
 ]
 
 MIDDLEWARE = [
@@ -83,7 +84,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "maktab",
         "USER": "admin",
-        "PASSWORD": "adminpassword",
+        "PASSWORD": "amir112233",
         "HOST": "127.0.0.1",
         "PORT": "5432",
     }

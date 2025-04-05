@@ -3,7 +3,8 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
 from .models import User
-# Create your views here.
+
+
 
 @csrf_exempt
 def create_account(request):
@@ -18,7 +19,9 @@ def create_account(request):
             "user_id":user.id,
             "user_name":user.user_name
             })
-        
+
+
+
 @csrf_exempt
 def delete_account(request):
     if request.method == 'POST':

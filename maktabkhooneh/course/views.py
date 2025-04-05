@@ -5,14 +5,19 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Course
 import json
 
+
+
 @login_required
-def  user_profile(request):
+def user_profile(request):
     user_data= {
         'name':request.user.name, 
         'email_address':request.user.email, 
         'phone_number' :request.user.email,
     }
     return JsonResponse (user_data)
+
+
+
 
 @csrf_exempt
 def update_course(request, course_id):
