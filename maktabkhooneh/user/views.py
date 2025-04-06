@@ -50,14 +50,22 @@ def calculate_age(birth_date):
 def update_user_info(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        user = User.objects.get(id = data.get("userId"))
-        user.user_name = data.get("userName")
-        user.first_name = data.get("userName")
-        user.last_name = data.get("userName")
-        user.password = make_password(data.get("password"))
-        user.birth_date = data.get("birthDate")
-        user.phone_number = data.get("phoneNumber")
-        user.email = data.get("email")
+        try:
+            user = User.objects.get(id = data.get("userId"))
+        except:
+            return HttpResponse("user does not exist")
+        
+        if check_password(data.get("oldPassword"), user.password):
+            user.user_name = data.get("userName")
+            user.first_name = data.get("userName")
+            user.last_name = data.get("userName")
+            user.password = make_password(data.get("password"))
+            user.birth_date = data.get("birthDate")
+            user.phone_number = data.get("phoneNumber")
+            user.email = data.get("email")
+            return HttpResponse("user updated")
+        else:
+            return HttpResponse("wrong password")
 
 @csrf_exempt
 def see_user_info(request):

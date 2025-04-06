@@ -16,7 +16,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userName\":\"new user\",\r\n    \"password\":\"password\",\r\n    \"phoneNumber\":\"12345678910\"\r\n}",
+					"raw": "{\r\n    \"userName\":\"new user\",\r\n    \"password\":\"password\",\r\n    \"phoneNumber\":\"12345678911\",\r\n    \"birthDate\":\"2001-04-06\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -24,7 +24,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/user/create-account",
+					"raw": "http://127.0.0.1:8000/create-account",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -34,7 +34,6 @@
 					],
 					"port": "8000",
 					"path": [
-						"user",
 						"create-account"
 					]
 				}
@@ -59,7 +58,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/user/delete-account",
+					"raw": "http://127.0.0.1:8000/delete-account",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -69,8 +68,75 @@
 					],
 					"port": "8000",
 					"path": [
-						"user",
 						"delete-account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/user_info",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\":4,\r\n    \"password\":\"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/user_info",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"user_info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/update-info",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userId\": 4,\r\n  \"oldPassword\":\"password\",\r\n  \"userName\": \"alireza.g\",\r\n  \"password\": \"newStrongPassword123\",\r\n  \"birthDate\": \"2006-04-06\",\r\n  \"phoneNumber\": \"09123456789\",\r\n  \"email\": \"alireza@example.com\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/update-info",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"update-info"
 					]
 				}
 			},
