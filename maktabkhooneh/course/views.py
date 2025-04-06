@@ -24,7 +24,7 @@ def update_course(request, course_id):
     try:
         course = Course.objects.get(id=course_id)
     except Course.DoesNotExist:
-        return JsonResponse({"error": "Course not found"}, status=404)
+        return JsonResponse({"error": "Course not found"})
 
     if request.method == "POST" or request.method == "PUT":
         try:

@@ -47,7 +47,7 @@ class Course(models.Model):
     is_active = models.BooleanField(default=False)
     duration = models.TimeField(null=True, blank= True)
     price = models.BigIntegerField()
-    Categories = models.ManyToManyField(to=Category, related_name= 'Categories', null= True, blank= True)
+    Categories = models.ManyToManyField(Category, related_name= 'Categories')
 
     def __str__(self):
         return f"{self.name}"
