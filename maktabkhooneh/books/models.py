@@ -21,6 +21,7 @@ class Article(models.Model):
     slug = models.SlugField(unique=True)
     category = models.ForeignKey(to=CategoryArticle, on_delete=models.PROTECT)
     date_create = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
 
 
     def __str__(self):
@@ -54,6 +55,15 @@ class Book(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
 
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['slug']),
+        ]
+        ordering = ['-date_created']
+        get_latest_by = "date_created"    
+
+   
+    
     def __str__(self):
         return "{} - {}".format(self.title, self.author)
 
