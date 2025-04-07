@@ -36,3 +36,26 @@ def create_category_book(request):
             slug = data.get("slug")
         )
         return HttpResponse(f"{created_category_book.id} Category was created Successfully")
+    
+
+
+
+@csrf_exempt
+def delete_category_arthicle(request, cat_id):
+    if request.method == "DELETE":
+        category = get_object_or_404(CategoryArticle, id=cat_id)
+        category.delete()
+        return HttpResponse("The category was deleted Successfully")
+
+
+
+
+
+@csrf_exempt
+def delete_category_book(request, cat_id):
+    try:
+        cat_id = CategoryBook.objects.get(id=cat_id)
+    except CategoryBook.DoesNotExist:
+        return HttpResponse("The Category Does not exist!")
+    cat_id.delete()
+    return HttpResponse("The category was Deleted Successfully")    
