@@ -6,6 +6,8 @@ from .models import User
 from datetime import date, datetime
 from django.contrib.auth.hashers import make_password,check_password
 
+
+
 @csrf_exempt
 def create_account(request):
     if request.method == 'POST':
@@ -29,6 +31,8 @@ def create_account(request):
         else:
             return HttpResponse("ERROR")
 
+
+
 @csrf_exempt
 def delete_account(request):
     if request.method == 'POST':
@@ -40,11 +44,15 @@ def delete_account(request):
         else:
             return JsonResponse({"status":"ERROR"})
 
+
+
 def calculate_age(birth_date):
     if birth_date is None:
         return None
     today = date.today()
     return int(today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day)))
+
+
 
 @csrf_exempt
 def update_user_info(request):
@@ -66,6 +74,7 @@ def update_user_info(request):
             return HttpResponse("user updated")
         else:
             return HttpResponse("wrong password")
+
 
 @csrf_exempt
 def see_user_info(request):
