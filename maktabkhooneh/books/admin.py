@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.utils import timezone
+from django.db import models
+from.widgets import RichTextEditorWidget
 from .models import (Article, CategoryArticle
                      ,CategoryBook,Book)
 
@@ -33,6 +35,11 @@ class BookAdmin(admin.ModelAdmin):
     search_fields = ("status", "category", "title")
     fields = (("title", "slug"), "description", "status")
     list_per_page = 30
+
+
+    formfield_overrides = {
+        models.TextField: {"widget":RichTextEditorWidget},
+    }
 
 
     def get_ordring(self, request):
