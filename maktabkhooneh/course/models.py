@@ -8,7 +8,6 @@ class Teacher(models.Model):
     national_ID = models.IntegerField(unique=True)
     phone_number = models.CharField(max_length=11, unique=True)
     email_address = models.EmailField(null=True, blank=True)
-    profile = models.ForeignKey(to=User, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -22,7 +21,7 @@ class Student(models.Model):
     phone_number = models.CharField(max_length=11, unique=True)
     email_address = models.EmailField(null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
-    profile = models.ForeignKey(to=User, on_delete=models.CASCADE)
+
 
     def __str__(self):
         return f"{self.name}"
@@ -47,7 +46,7 @@ class Course(models.Model):
     is_active = models.BooleanField(default=False)
     duration = models.TimeField(null=True, blank= True)
     price = models.BigIntegerField()
-    Categories = models.ManyToManyField(Category, related_name= 'Categories')
+    Categories = models.ManyToManyField(Category, related_name= 'categories')
 
     def __str__(self):
         return f"{self.name}"

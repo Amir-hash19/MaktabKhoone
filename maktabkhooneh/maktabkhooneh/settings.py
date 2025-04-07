@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -121,6 +122,37 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Panel for managing Courses",
+    "site_header": "Managing panel Content",
+    "site_brand": "MaktabKhoone",
+    "welcome_sign": "Welcome to panel!",
+    "copyright": "موسسه آموزش",
+    
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": ["auth", "sessions"],
+    "order_with_respect_to": ["courses", "articles", "books"],
+
+    "icons": {
+        "auth": "fas fa-user-lock",
+        "books.Book": "fas fa-book",
+        "articles.Article": "fas fa-newspaper",
+        "courses.Course": "fas fa-chalkboard-teacher",
+    },
+
+    "custom_links": {
+        "courses": [{
+            "name": "افزودن دوره ویژه",
+            "url": "add_special_course",  
+            "icon": "fas fa-star",
+            "permissions": ["courses.add_course"]
+        }]
+    }
+}
 
 
 # Static files (CSS, JavaScript, Images)

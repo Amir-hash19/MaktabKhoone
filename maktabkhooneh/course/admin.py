@@ -4,6 +4,7 @@ from django.utils import timezone
 
 
 
+
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
     list_display = ("name", "email_address", "date_created")
