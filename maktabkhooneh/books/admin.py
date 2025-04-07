@@ -50,7 +50,7 @@ class BookAdmin(admin.ModelAdmin):
 
     def set_book_to_published(self, request, queryset):
         count = queryset.update(status="published")
-        self.message_user(request, "{}The selected book have been published")
+        self.message_user(request, "{}.The selected book have been published".format(count))
 
     set_book_to_published.short_description = "mark selected book as published"    
 
