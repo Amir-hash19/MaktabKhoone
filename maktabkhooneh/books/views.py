@@ -59,3 +59,42 @@ def delete_category_book(request, cat_id):
         return HttpResponse("The Category Does not exist!")
     cat_id.delete()
     return HttpResponse("The category was Deleted Successfully")    
+
+
+
+
+
+
+@csrf_exempt
+def display_category_book(request, cat_id):
+    try:
+        category = CategoryBook.objects.get(id=cat_id)
+        category_data = {
+            "id":category.id,
+            "name":category.name,
+            "slug":category.slug
+        }
+        return JsonResponse(category_data, safe=True)
+    except CategoryBook.DoesNotExist:
+        return JsonResponse({"error":"Category not found!"})
+
+
+
+
+@csrf_exempt
+def display_category_article(request, cat_id):
+    try:
+        category = CategoryArticle.objects.get(id=cat_id)
+        category_data = {
+            "id":category.id,
+            "name":category.name,
+            "slug":category.slug
+        }
+        return JsonResponse(category_data, safe=True)
+    except CategoryBook.DoesNotExist:
+        return JsonResponse({"error":"Category not found!"})
+
+
+
+
+
