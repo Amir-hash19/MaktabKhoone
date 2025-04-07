@@ -24,16 +24,15 @@ class TeacherAdmin(admin.ModelAdmin):
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
-    # list_display = ("name", "email_address", "date_created")
-    # search_fields = ("name", "email_address")
-    # list_filter = ("name", "date_created")
-    # ordering = ("-date_created",)   
-    # readonly_fields = ("date_created", )
-    # list_per_page = 30
+    list_display = ("name", "email_address", "date_created")
+    search_fields = ("name", "email_address")
+    list_filter = ("name", "date_created")
+    ordering = ("date_created",)   
+    list_per_page = 30
 
     def get_ordering(self, request):
         if request.user.is_superuser:
-            return ("name", "-date_created")
+            return ("name", "date_created")
         return ("email_address", )
     
 
@@ -47,11 +46,11 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    # list_display = ("name", "is_active", "date_created", "teachers")
-    # list_filter = ("date_created", "price")
-    # search_fields = ("is_active", "name", "date_created")
-    # fields = (("name", "price"), "teachers", "is_active")
-    # list_per_page = 30
+    list_display = ("name", "is_active", "date_created")
+    list_filter = ("date_created", "price")
+    search_fields = ("is_active", "name", "date_created")
+    fields = (("name", "price"), "teachers", "is_active")
+    list_per_page = 30
 
     def get_ordering(self, request):
             if request.user.is_superuser:
