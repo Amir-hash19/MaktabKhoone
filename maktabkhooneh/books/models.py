@@ -53,6 +53,8 @@ class Book(models.Model):
     category = models.ForeignKey(to=CategoryBook, on_delete=models.CASCADE,related_name="bookcategory")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="draft")
     date_created = models.DateTimeField(auto_now_add=True)
+    quantity = models.PositiveIntegerField(null=False, blank=False)
+
 
 
     class Meta:

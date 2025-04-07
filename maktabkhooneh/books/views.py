@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from books.models import CategoryArticle, Article, CategoryBook, Book
 import json
-
+from user.models import User
 
 
 def home_page(request):
@@ -96,5 +96,84 @@ def display_category_article(request, cat_id):
 
 
 
+
+
+
+@csrf_exempt
+def create_book(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            category_id = data.get("category_id")
+            author_id = data.get("author_id")
+            if not category_id and not author_id:
+                return JsonResponse({"error":"category_id and author_id is required"}, status=400)
+            
+            try:
+                category = CategoryBook.objects.get(id=category_id)
+            except CategoryBook.DoesNotExist:
+                return JsonResponse({"error":"category does not exist!"}, status=404)
+            
+            try:
+                author = User.objects.get(id=author_id)
+            except User.DoesNotExist:
+                return JsonResponse({"error":"author does not exist"}, status=404)    
+
+            
+            created_book = Book.objects.create(
+                title=data.get("title"),
+                description=data.get("description"),
+                slug=data.get("slug"),
+                status=data.get("status"),
+                quantity = data.get("quantity"),
+                author = author,
+                category = category
+            )
+            return JsonResponse({"message":f"Book with ID {created_book.id} created Succesfully"})
+
+        except json.JSONDecodeError:
+            return JsonResponse({"error":"Invalid Json data"})
+        
+    return JsonResponse({"error":"Invalid request method"}, status=405)        
+
+
+
+
+
+
+@csrf_exempt
+def create_arthicle(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            category_id = data.get("category_id")
+            author_id = data.get("author_id")
+
+            if not category_id and not author_id:
+                return JsonResponse({"error":"category_id and author_id is required!"}, status=400)
+            
+            try:
+                category = CategoryArticle.objects.get(id=category_id)
+            except CategoryArticle.DoesNotExist:
+                return HttpResponse("The category does not exist!")
+            
+            try:
+                author = User.objects.get(id=author_id)
+            except User.DoesNotExist:
+                return HttpResponse("The User does not exist!")
+                
+
+            created_arthicle = Article.objects.create(
+                title = data.get("title"),
+                description = data.get("description"),
+                slug = data.get("slug"),
+                category = category,
+                author = author
+            )
+            return JsonResponse({"message":f" Article with ID {created_arthicle.id} created Succesfully"})
+        except json.JSONDecodeError:
+            return JsonResponse({"error":"Invalid Json data"}, status=405)
+        
+    return JsonResponse({"ERROR":"Invalid request method"}, status=405)
 
 
