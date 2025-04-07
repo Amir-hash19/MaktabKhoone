@@ -7,6 +7,10 @@ from datetime import date, datetime
 from django.contrib.auth.hashers import make_password,check_password
 
 
+def home_page(request):
+    return HttpResponse("Welcome and This is landing page!")
+
+
 
 @csrf_exempt
 def create_account(request):
