@@ -177,3 +177,62 @@ def create_arthicle(request):
     return JsonResponse({"ERROR":"Invalid request method"}, status=405)
 
 
+
+
+@csrf_exempt
+def update_book(request, book_id):
+    try:
+        book = Book.objects.get(id=book_id)
+    except Book.DoesNotExist:
+        return JsonResponse({"ERROR":"book not found!"}, status=404) 
+
+
+    try:
+        if request.method in ["PUT","PATCH"]:
+            try:
+                data = json.loads(request.body)
+            except json.JSONDecodeError:
+                return JsonResponse({"error":"Invalid Json format"}, status=400)
+
+            try:
+                if request.method == "PUT":
+                    book.title = data.get("book", book.title)
+                    book.description = data.get("description", book.description)
+                    book.slug = data.get("slug", book.slug)
+                    book.status = data.get("status", book.status)
+                    book.quantity = int(data.get("quantity", book.quantity))
+                    if "author" in data:
+                        book.author = User.objects.get(id=int(data["author"]))
+                    if "category" in data:
+                        book.category = User.objects.get(id=int(data["category"]))    
+                elif request.method == "PATCH":
+                    if "title" in data:
+                        book.title = data["title"]
+                    if "description" in data:
+                        book.description = data["description"]
+                    if "slug" in data:
+                        book.slug = data["slug"]
+                    if "quantity" in data:
+                        book.quantity = data["quantity"]
+                    if "status" in data:
+                        book.status = data["status"]
+                    if "category" in data:
+                        book.category = CategoryBook.objects.get(id=int(data["category"]))   
+                    if "author" in data:
+                        book.author = User.objects.get(id=int(data["author"]))
+
+                book.save()
+                return JsonResponse({"message":"The book updated Successfully!"}, status=200)
+            except ValueError:
+                return JsonResponse({"ERROR":"Invalid data type"})
+    except json.JSONDecodeError:
+        return HttpResponse("invalid data inserted!")        
+    return JsonResponse({"ERROR":"Invalid request method"}, status=405)            
+    
+
+   
+        
+        
+
+
+
