@@ -1,0 +1,134 @@
+
+Table "category_article" {
+  "id" SERIAL [pk, increment]
+  "name" VARCHAR(100) [unique, not null]
+  "slug" VARCHAR(100) [unique, not null]
+}
+
+Table "app_user" {
+  "id" SERIAL [pk, increment]
+  "user_name" VARCHAR(20) [not null]
+  "first_name" VARCHAR(20)
+  "last_name" VARCHAR(20)
+  "password" VARCHAR(150)
+  "age" INTEGER
+  "phone_number" VARCHAR(13) [not null]
+  "email" VARCHAR(200)
+
+  Indexes {
+    user_name [unique, name: "unique_user_name"]
+  }
+}
+
+Table "article" {
+  "id" SERIAL [pk, increment]
+  "title" VARCHAR(100) [not null]
+  "author_id" INTEGER [not null]
+  "description" TEXT
+  "slug" VARCHAR(100) [unique, not null]
+  "category_id" INTEGER [not null]
+  "date_create" TIMESTAMP [not null, default: `CURRENT_TIMESTAMP`]
+  "update_at" TIMESTAMP [not null, default: `CURRENT_TIMESTAMP`]
+}
+
+Table "category_book" {
+  "id" SERIAL [pk, increment]
+  "name" VARCHAR(100) [not null]
+  "slug" VARCHAR(100) [unique, not null]
+}
+
+Table "book" {
+  "id" SERIAL [pk, increment]
+  "title" VARCHAR(100) [not null]
+  "description" TEXT
+  "slug" VARCHAR(100) [unique, not null]
+  "author_id" INTEGER [not null]
+  "category_id" INTEGER [not null]
+  "status" VARCHAR(20) [default: 'draft']
+  "date_created" TIMESTAMP [not null, default: `CURRENT_TIMESTAMP`]
+  "quantity" INTEGER [not null]
+
+  Indexes {
+    slug [name: "idx_slug"]
+    date_created [name: "idx_date_created"]
+  }
+}
+
+Table "teacher" {
+  "id" SERIAL [pk, increment]
+  "name" VARCHAR(32) [not null]
+  "national_ID" INTEGER [unique, not null]
+  "phone_number" VARCHAR(11) [unique, not null]
+  "email_address" VARCHAR(255)
+  "date_created" TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+}
+
+Table "student" {
+  "id" SERIAL [pk, increment]
+  "name" VARCHAR(32) [not null]
+  "national_ID" INTEGER [unique, not null]
+  "phone_number" VARCHAR(11) [unique, not null]
+  "email_address" VARCHAR(255)
+  "date_created" TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+}
+
+Table "category" {
+  "id" SERIAL [pk, increment]
+  "name" VARCHAR(32) [not null]
+}
+
+Table "course" {
+  "id" SERIAL [pk, increment]
+  "name" VARCHAR(32) [not null]
+  "date_created" TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  "is_active" BOOLEAN [default: FALSE]
+  "duration" TIME
+  "price" BIGINT [not null]
+}
+
+Table "teacher_course" {
+  "teacher_id" INTEGER [not null]
+  "course_id" INTEGER [not null]
+
+  Indexes {
+    (teacher_id, course_id) [pk]
+  }
+}
+
+Table "student_course" {
+  "student_id" INTEGER [not null]
+  "course_id" INTEGER [not null]
+
+  Indexes {
+    (student_id, course_id) [pk]
+  }
+}
+
+Table "category_course" {
+  "category_id" INTEGER [not null]
+  "course_id" INTEGER [not null]
+
+  Indexes {
+    (category_id, course_id) [pk]
+  }
+}
+
+Ref "fk_author":"app_user"."id" < "article"."author_id" [delete: cascade]
+
+Ref "fk_category":"category_article"."id" < "article"."category_id" [delete: restrict]
+
+Ref "fk_author":"app_user"."id" < "book"."author_id" [delete: cascade]
+
+Ref "fk_category":"category_book"."id" < "book"."category_id" [delete: cascade]
+
+Ref "fk_teacher":"teacher"."id" < "teacher_course"."teacher_id" [delete: cascade]
+
+Ref "fk_course":"course"."id" < "teacher_course"."course_id" [delete: cascade]
+
+Ref "fk_student":"student"."id" < "student_course"."student_id" [delete: cascade]
+
+Ref "fk_course":"course"."id" < "student_course"."course_id" [delete: cascade]
+
+Ref "fk_category":"category"."id" < "category_course"."category_id" [delete: cascade]
+
+Ref "fk_course":"course"."id" < "category_course"."course_id" [delete: cascade]
