@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from .models import Course
 import json
-
+from rest_framework import viewsets 
+from course.serializer import Courseserializer
 
 
 @login_required
@@ -39,3 +40,7 @@ def update_course(request, course_id):
             return JsonResponse({"error"})
 
     return JsonResponse({"error": "Invalid request method"})
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = Course.objects.all()
+    serializer_class = Courseserializer
