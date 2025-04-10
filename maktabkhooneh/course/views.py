@@ -41,6 +41,7 @@ def update_course(request, course_id):
 
     return JsonResponse({"error": "Invalid request method"})
 
-class UserViewSet(viewsets.ModelViewSet):
+
+class courselist(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = Courseserializer
