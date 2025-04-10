@@ -5,10 +5,19 @@ from django.http import HttpResponse, JsonResponse
 from .models import User
 from datetime import date, datetime
 from django.contrib.auth.hashers import make_password,check_password
-
+from rest_framework import generics
+from .serializers import UserSerializer
 
 def home_page(request):
     return HttpResponse("Welcome and This is landing page!")
+
+
+class UserListAPI(generics.ListAPIView):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+
+
+
 
 
 

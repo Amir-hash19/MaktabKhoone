@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -84,9 +85,9 @@ WSGI_APPLICATION = 'maktabkhooneh.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "DB_NAME",
-        "USER": "DB_USER",
-        "PASSWORD": "DB_PASSWORD",
+        "NAME": "maktab",
+        "USER": "admin",
+        "PASSWORD": "amir112233",
         "HOST": "127.0.0.1",
         "PORT": "5432",
     }

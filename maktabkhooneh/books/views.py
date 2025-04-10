@@ -3,12 +3,20 @@ from django.http.response import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from books.models import CategoryArticle, Article, CategoryBook, Book
+from rest_framework import generics
+from .serializers import ArticleSerializer
 import json
 from user.models import User
 
 
 def home_page(request):
     return HttpResponse("This is django project")
+
+
+
+class ArticleListAPI(generics.ListAPIView):
+    serializer_class = ArticleSerializer
+    queryset = Article.objects.all()
 
 
 
@@ -125,9 +133,9 @@ def create_book(request):
                 description=data.get("description"),
                 slug=data.get("slug"),
                 status=data.get("status"),
-                quantity = data.get("quantity"),
-                author = author,
-                category = category
+                quantity=data.get("quantity"),
+                author=author,
+                category=category
             )
             return JsonResponse({"message":f"Book with ID {created_book.id} created Succesfully"})
 
