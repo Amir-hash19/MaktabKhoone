@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from .models import Course
 import json
-from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, ListCreateAPIView, CreateAPIView,DestroyAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, ListCreateAPIView, CreateAPIView,DestroyAPIView, UpdateAPIView
 from course.serializer import Courseserializer, courseslistserializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 
@@ -78,3 +78,7 @@ class delete_course_view(DestroyAPIView):
     permission_classes = [IsAdminUser]
     queryset = Course.objects.all()
     serializer_class = courselistview
+
+class update_course_view(UpdateAPIView):
+    queryset = Course.objects.all()
+    serializer_class = Courseserializer
