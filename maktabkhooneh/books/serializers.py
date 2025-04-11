@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Article
+from .models import Article, Book
 
 
 
@@ -17,4 +17,10 @@ class ArticleSerializerDate(serializers.ModelSerializer):
         model = Article
         fields = ["date_create"]
 
+
+
+class BookSerializerDate(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = "__all__"
 

@@ -3,10 +3,25 @@ from django.http.response import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from books.models import CategoryArticle, Article, CategoryBook, Book
-from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, ListCreateAPIView
-from .serializers import ArticleSerializer
+from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, ListCreateAPIView,CreateAPIView
+from .serializers import ArticleSerializer, BookSerializerDate
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 import json
 from user.models import User
+
+
+
+class BookCreateView(CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Article.objects.all()
+    serializer_class = BookSerializerDate
+    def perform_create(self, serializer):
+        serializer.save(
+            creator = self.request.user
+        )
+
+
+
 
 
 class ArticleListCreateView(ListCreateAPIView):
@@ -41,7 +56,7 @@ class ArticleRetrieView(RetrieveAPIView):
     queryset = Article.objects.all()
 
 
-    
+
         
 
 

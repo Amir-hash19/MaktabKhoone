@@ -1,8 +1,9 @@
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from django.urls import path
 from .views import (home_page,create_category_article, create_category_book,
                                delete_category_arthicle,delete_category_book, 
                                display_category_book, display_category_article,
-                                 create_book, create_arthicle, update_book, ArticleListAPI, ArticleTimeListAPI, ArticleRetrieView,ArticleRetrieveUpdateDestroyView ,ArticleListCreateView)
+                                 create_book, create_arthicle, update_book, ArticleListAPI, ArticleTimeListAPI, ArticleRetrieView,ArticleRetrieveUpdateDestroyView ,ArticleListCreateView, BookCreateView)
 
 urlpatterns = [
     path("", home_page, name="home-page"),
@@ -19,7 +20,9 @@ urlpatterns = [
     path("filter-by-time",ArticleTimeListAPI.as_view()),
     path("article-retrie/<int:pk>", ArticleRetrieView.as_view()),
     path("create-list/", ArticleListCreateView.as_view()),
-    path("update-delete-retriev/<int:pk>", ArticleRetrieveUpdateDestroyView.as_view())
-
-
+    path("update-delete-retriev/<int:pk>", ArticleRetrieveUpdateDestroyView.as_view()),
+    path("login-books", TokenObtainPairView.as_view()),
+    path("refresh-token-books", TokenRefreshView.as_view()),
+    path("verify-token-books", TokenVerifyView.as_view()),
+    path("create-book", BookCreateView.as_view())
 ]
