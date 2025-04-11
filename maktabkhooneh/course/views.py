@@ -4,9 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from .models import Course
 import json
-from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, ListCreateAPIView
-from course.serializer import Courseserializer
-
+from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, ListCreateAPIView, CreateAPIView,DestroyAPIView
+from course.serializer import Courseserializer, courseslistserializer
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 
 @login_required
 def user_profile(request):
@@ -42,9 +42,10 @@ def update_course(request, course_id):
     return JsonResponse({"error": "Invalid request method"})
 
 
-class courselist(ListAPIView):
+class courselistview(ListAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = Course.objects.all()
-    serializer_class = Courseserializer
+    serializer_class = courseslistserializer
 
 
 class course_retrive_view(RetrieveAPIView):
@@ -53,11 +54,27 @@ class course_retrive_view(RetrieveAPIView):
 
 
 class retrive_update_destroy_view(RetrieveUpdateDestroyAPIView):
-        queryset = Course.objects.all()
-        serializer_class = Courseserializer
+    permission_classes = [IsAdminUser]
+    queryset = Course.objects.all()
+    serializer_class = Courseserializer
+
 
 class list_create_view(ListCreateAPIView):
-        queryset = Course.objects.all()
-        serializer_class = Courseserializer
+    queryset = Course.objects.all()
+    serializer_class = Courseserializer
+    permission_classes = [IsAdminUser]
 
+class create_course_view(CreateAPIView):
+    permission_classes = [IsAdminUser]
+    queryset = Course.objects.all()
+    serializer_class = Courseserializer
 
+    def perform_create(self, serializer):
+        serializer.save(
+            creator= self.request.user
+        )
+
+class delete_course_view(DestroyAPIView):
+    permission_classes = [IsAdminUser]
+    queryset = Course.objects.all()
+    serializer_class = courselistview

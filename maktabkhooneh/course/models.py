@@ -47,6 +47,7 @@ class Course(models.Model):
     duration = models.TimeField(null=True, blank= True)
     price = models.BigIntegerField()
     Categories = models.ForeignKey(to=Category, on_delete=models.CASCADE, related_name= 'categories')
+    creator = models.ForeignKey(User, on_delete= models.CASCADE)
 
     def __str__(self):
         return f"{self.name}"
