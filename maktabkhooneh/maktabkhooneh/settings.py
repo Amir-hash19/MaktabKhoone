@@ -37,7 +37,6 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework',
-    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -98,16 +97,14 @@ WSGI_APPLICATION = 'maktabkhooneh.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": DB_NAME,
-        "USER": DB_USER,
-        "PASSWORD": DB_PASSWORD,
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
 
 
 # Password validation
@@ -139,38 +136,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
-
-
-JAZZMIN_SETTINGS = {
-    "site_title": "Panel for managing Courses",
-    "site_header": "Managing panel Content",
-    "site_brand": "MaktabKhoone",
-    "welcome_sign": "Welcome to panel!",
-    "copyright": "موسسه آموزش",
-    
-    "show_sidebar": True,
-    "navigation_expanded": True,
-    "hide_apps": ["auth", "sessions"],
-    "order_with_respect_to": ["courses", "articles", "books"],
-
-    "icons": {
-        "auth": "fas fa-user-lock",
-        "books.Book": "fas fa-book",
-        "articles.Article": "fas fa-newspaper",
-        "courses.Course": "fas fa-chalkboard-teacher",
-    },
-
-    "custom_links": {
-        "courses": [{
-            "name": "افزودن دوره ویژه",
-            "url": "add_special_course",  
-            "icon": "fas fa-star",
-            "permissions": ["courses.add_course"]
-        }]
-    }
-}
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/

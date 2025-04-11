@@ -7,7 +7,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdate
 from .serializers import ArticleSerializer, BookSerializerDate
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 import json
-from user.models import User
+from django.contrib.auth.models import User
 
 
 

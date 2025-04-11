@@ -1,24 +1,24 @@
-from django.shortcuts import render
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
-from .models import User
+from django.contrib.auth.models import User
 from datetime import date, datetime
 from django.contrib.auth.hashers import make_password,check_password
-from rest_framework import generics
+from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView
 from .serializers import UserSerializer
+
 
 def home_page(request):
     return HttpResponse("Welcome and This is landing page!")
 
-
-class UserListAPI(generics.ListAPIView):
+class UserListAPI(ListAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
-
-
-
+class UserCreateView(CreateAPIView):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+    
 
 
 @csrf_exempt
