@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from .models import Course
 import json
-from rest_framework import viewsets 
+from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, ListCreateAPIView
 from course.serializer import Courseserializer
 
 
@@ -41,6 +41,23 @@ def update_course(request, course_id):
 
     return JsonResponse({"error": "Invalid request method"})
 
-class UserViewSet(viewsets.ModelViewSet):
+
+class courselist(ListAPIView):
     queryset = Course.objects.all()
     serializer_class = Courseserializer
+
+
+class course_retrive_view(RetrieveAPIView):
+    queryset = Course.objects.all()
+    serializer_class = Courseserializer
+
+
+class retrive_update_destroy_view(RetrieveUpdateDestroyAPIView):
+        queryset = Course.objects.all()
+        serializer_class = Courseserializer
+
+class list_create_view(ListCreateAPIView):
+        queryset = Course.objects.all()
+        serializer_class = Courseserializer
+
+

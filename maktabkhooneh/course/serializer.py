@@ -4,4 +4,4 @@ from course.models import Course
 class Courseserializer(ModelSerializer):
     class Meta:
         model = Course
-        fields = ['name']
+        fields = ['__all__']
