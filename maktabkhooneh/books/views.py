@@ -3,10 +3,21 @@ from django.http.response import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from books.models import CategoryArticle, Article, CategoryBook, Book
-from rest_framework import generics
+from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, ListCreateAPIView
 from .serializers import ArticleSerializer
 import json
 from user.models import User
+
+
+class ArticleListCreateView(ListCreateAPIView):
+     queryset = Article.objects.all()
+     serializer_class = ArticleSerializer
+
+
+class ArticleRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+
 
 
 def home_page(request):
@@ -14,10 +25,24 @@ def home_page(request):
 
 
 
-class ArticleListAPI(generics.ListAPIView):
+class ArticleListAPI(ListAPIView):
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
 
+
+
+class ArticleTimeListAPI(ListAPIView):
+    serializer_class = ArticleSerializer
+    queryset = Article.objects.order_by("-date_create")
+
+
+class ArticleRetrieView(RetrieveAPIView):
+    serializer_class = ArticleSerializer
+    queryset = Article.objects.all()
+
+
+    
+        
 
 
 

@@ -25,8 +25,8 @@ class TeacherAdmin(admin.ModelAdmin):
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ("name", "email_address", "date_created")
-    search_fields = ("name", "email_address")
+    list_display = ("name", "date_created")
+    search_fields = ("name",)
     list_filter = ("name", "date_created")
     ordering = ("date_created",)   
     list_per_page = 30

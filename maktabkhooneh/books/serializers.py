@@ -10,3 +10,11 @@ class ArticleSerializer(serializers.ModelSerializer):
 
 
 
+
+
+class ArticleSerializerDate(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = ["date_create"]
+
+
