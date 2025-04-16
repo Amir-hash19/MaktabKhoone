@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-
 class Teacher(models.Model):
     name = models.CharField(max_length=32)
     national_ID = models.IntegerField(unique=True)

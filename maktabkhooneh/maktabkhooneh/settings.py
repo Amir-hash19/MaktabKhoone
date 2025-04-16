@@ -43,19 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'user',
     'course.apps.CourseConfig',
     'books.apps.BooksConfig',
+    'User'
 ]
-
-
-
-
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
-}
 
 
 SIMPLE_JWT = {
@@ -93,6 +84,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'maktabkhooneh.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication', 
+    ],
+    
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

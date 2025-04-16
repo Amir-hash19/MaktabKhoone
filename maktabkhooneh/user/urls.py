@@ -1,13 +1,15 @@
 from django.urls import path
-from .views import create_account, delete_account, see_user_info, update_user_info, home_page, UserListAPI
-from .views import UserCreateView
+from .views import (
+    CreateUserView, DeleteUserView
+    )
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView, TokenRefreshView, TokenVerifyView,
+    )
+
 urlpatterns = [
-    path("", home_page),
-    path("create-account", UserCreateView.as_view()),
-    path("list", UserListAPI.as_view()),
-    #path("create-account", create_account),
-    path("delete-account", delete_account),
-    path("user_info", see_user_info),
-    path("update-info", update_user_info),
-    path("list-user", UserListAPI.as_view())
+    path("create-account", CreateUserView.as_view()),
+    path("delete-account", DeleteUserView.as_view()),
+    path("obtain-token", TokenObtainPairView.as_view()),
+    path("refresh-token", TokenRefreshView.as_view()),
+    path("verify-token", TokenVerifyView.as_view())
 ]
