@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.db import models
 from.widgets import RichTextEditorWidget
 from .models import (Article, CategoryArticle
-                     ,CategoryBook,Book)
+                     ,CategoryBook,Book, OTP)
 
 
 
@@ -69,3 +69,9 @@ class CategoryBookAdmin(admin.ModelAdmin):
     list_display = ("name", "slug")
     search_fields = ("name", )
          
+
+
+@admin.register(OTP)
+class OPTAdmin(admin.ModelAdmin):
+    list_display = ("phone", "created_at")
+    search_fields = ("phone", )

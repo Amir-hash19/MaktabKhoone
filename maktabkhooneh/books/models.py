@@ -1,5 +1,7 @@
 from django.db import models
 from User.models import User
+from django.utils import timezone
+import random
 
 
 
@@ -72,4 +74,15 @@ class Book(models.Model):
 
         
 
+class OTP(models.Model):
+    phone = models.CharField(max_length=15)
+    code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
 
+
+    def is_valid(self):
+        return timezone.now() - self.created_at < timezone.timedelta(minutes=2)
+    
+    @staticmethod
+    def generate_code():
+        return str(random.randint(100000, 999999))
