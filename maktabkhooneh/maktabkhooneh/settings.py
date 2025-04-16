@@ -84,6 +84,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'maktabkhooneh.wsgi.application'
 
+
+AUTH_USER_MODEL = "User.User"
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication', 
