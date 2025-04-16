@@ -25,5 +25,5 @@ urlpatterns = [
     path("update-delete-retriev/<int:pk>", ArticleRetrieveUpdateDestroyView.as_view()),
     path("create-book", BookCreateView.as_view()),
     path("send-otp/", SendOTPView.as_view()),
-    path("verify-otp", VerifyOTPView.as_view()),
+    path("verify-otp/", VerifyOTPView.as_view()),
 ]
