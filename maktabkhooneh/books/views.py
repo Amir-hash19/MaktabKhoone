@@ -1,26 +1,70 @@
-from django.shortcuts import render
+from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, ListCreateAPIView,CreateAPIView
+from .serializers import ArticleSerializer, BookSerializerDate, SendOTPSerializer, VerifyOTPSerializer
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
+from books.models import CategoryArticle, Article, CategoryBook, Book, OTP
 from django.http.response import HttpResponse, JsonResponse
+from rest_framework_simplejwt.tokens import RefreshToken
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
-from books.models import CategoryArticle, Article, CategoryBook, Book
-from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, ListCreateAPIView,CreateAPIView
-from .serializers import ArticleSerializer, BookSerializerDate
-from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
+from django.contrib.auth import get_user_model
+from rest_framework.response import Response
+from django.contrib.auth.models import User 
+from rest_framework.views import APIView
+from rest_framework import status
+from .utils.sms import SMSClient
 import json
-from user.models import User
 
 
 
+
+
+
+#OTP Authentication!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+User = get_user_model()
+class SendOTPView(APIView):
+    def post(self, request):
+        serializer = SendOTPSerializer(data=request.data)
+        if serializer.is_valid():
+            phone = serializer.validated_data["phone"]
+            code = OTP.generate_code()
+            OTP.objects.create(phone=phone, code=code)
+            SMSClient().send_otp(phone, code)
+            return Response({"details":"code has been sent!"})
+        return Response(serializer.errors, status=400)
+
+
+class VerifyOTPView(APIView):
+    def post(self, request):
+        serializer = VerifyOTPSerializer(data=request.data)
+        if serializer.is_valid():
+            phone = serializer.validated_data["phone"]
+            code = serializer.validated_data["code"]
+            otp = OTP.objects.filter(phone=phone, code=code).last()
+            if otp and otp.is_valid():
+                user, created = User.objects.get_or_create(username=phone)
+                token = RefreshToken.for_user(user)
+                return Response({
+                    "refresh":str(token),
+                    "access":str(token.access_token)
+                })
+            return Response({"details":"the code is expired or invalidated!"}, status=400)
+        return Response(serializer.errors, status=400)
+
+
+
+
+
+
+#RESTframeworkAPI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 class BookCreateView(CreateAPIView):
-    permission_classes = [IsAuthenticated]
-    queryset = Article.objects.all()
+    queryset = Book.objects.all()
     serializer_class = BookSerializerDate
-    def perform_create(self, serializer):
-        serializer.save(
-            creator = self.request.user
-        )
+   
 
-
+class ListBookView(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Book.objects.all()
+    serializer_class = BookSerializerDate
 
 
 
@@ -40,13 +84,13 @@ def home_page(request):
 
 
 
-class ArticleListAPI(ListAPIView):
+class ArticleListView(ListAPIView):
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
 
 
 
-class ArticleTimeListAPI(ListAPIView):
+class ArticleTimeListView(ListAPIView):
     serializer_class = ArticleSerializer
     queryset = Article.objects.order_by("-date_create")
 
@@ -62,6 +106,10 @@ class ArticleRetrieView(RetrieveAPIView):
 
 
 
+
+
+
+#Function base views!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 @csrf_exempt
 def create_category_article(request):
     if request.method == "POST":

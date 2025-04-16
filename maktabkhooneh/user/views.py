@@ -23,7 +23,7 @@ class UserListAPI(generics.ListAPIView):
 
 @csrf_exempt
 def create_account(request):
-    if request.method == 'POST':
+    if request.method == 'POST': 
         data = json.loads(request.body)
         birth_date_str = data.get("birthDate")  # e.g., '2006-04-06'
         if birth_date_str:

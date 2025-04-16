@@ -10,8 +10,6 @@ class ArticleSerializer(serializers.ModelSerializer):
 
 
 
-
-
 class ArticleSerializerDate(serializers.ModelSerializer):
     class Meta:
         model = Article
@@ -24,3 +22,17 @@ class BookSerializerDate(serializers.ModelSerializer):
         model = Book
         fields = "__all__"
 
+
+
+
+
+class SendOTPSerializer(serializers.Serializer):
+    phone = serializers.CharField()
+
+
+
+
+class VerifyOTPSerializer(serializers.Serializer):
+    phone = serializers.CharField()
+    code = serializers.CharField()
+    
