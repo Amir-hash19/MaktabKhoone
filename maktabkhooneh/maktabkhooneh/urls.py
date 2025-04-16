@@ -12,7 +12,7 @@ admin.site.index_title = "MaktabKhonne"
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", include("user.urls")),
+    path("", include("User.urls")),
     path("course/", include("course.urls")),
     path("books/", include("books.urls")),
 ]
