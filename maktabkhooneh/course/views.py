@@ -7,6 +7,9 @@ import json
 from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, ListCreateAPIView, CreateAPIView,DestroyAPIView, UpdateAPIView
 from course.serializer import Courseserializer, courseslistserializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
 @login_required
 def user_profile(request):
@@ -30,7 +33,7 @@ def update_course(request, course_id):
     if request.method == "POST" or request.method == "PUT":
         try:
             data = json.loads(request.body)
-            course.title = data.get("title", course.title)
+            course.name = data.get("title", course.title)
             course.description = data.get("description", course.description)
             course.price = data.get("price", course.price)
             course.save()
@@ -42,29 +45,29 @@ def update_course(request, course_id):
     return JsonResponse({"error": "Invalid request method"})
 
 
-class courselistview(ListAPIView):
+class CourseListView(ListAPIView):
     permission_classes = [IsAuthenticated]
     queryset = Course.objects.all()
     serializer_class = courseslistserializer
 
 
-class course_retrive_view(RetrieveAPIView):
+class CourseRetriveView(RetrieveAPIView):
     queryset = Course.objects.all()
     serializer_class = Courseserializer
 
 
-class retrive_update_destroy_view(RetrieveUpdateDestroyAPIView):
+class RetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAdminUser]
     queryset = Course.objects.all()
     serializer_class = Courseserializer
 
 
-class list_create_view(ListCreateAPIView):
+class ListCreateView(ListCreateAPIView):
     queryset = Course.objects.all()
     serializer_class = Courseserializer
     permission_classes = [IsAdminUser]
 
-class create_course_view(CreateAPIView):
+class CreateCourseView(CreateAPIView):
     permission_classes = [IsAdminUser]
     queryset = Course.objects.all()
     serializer_class = Courseserializer
@@ -74,11 +77,44 @@ class create_course_view(CreateAPIView):
             creator= self.request.user
         )
 
-class delete_course_view(DestroyAPIView):
+class DeleteCourseView(DestroyAPIView):
     permission_classes = [IsAdminUser]
     queryset = Course.objects.all()
-    serializer_class = courselistview
+    serializer_class = CourseListView
 
-class update_course_view(UpdateAPIView):
+class UpdateCourseView(UpdateAPIView):
     queryset = Course.objects.all()
     serializer_class = Courseserializer
+
+class ActiveCoursesListView(ListAPIView):
+    queryset = Course.objects.filter(is_active=True)
+    serializer_class = Courseserializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+class MyCoursesView(ListAPIView):
+    serializer_class = Courseserializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Course.objects.filter(creator=self.request.user)
+    
+class UnenrollFromCourseView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, course_id):
+        try:
+            course = Course.objects.get(id=course_id)
+            course.students.remove(request.user.student)
+            return Response({"message": "Unenrolled successfully!"})
+        except Course.DoesNotExist:
+            return Response({"error": "Course not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+class CourseStudentsListView(RetrieveAPIView):
+    serializer_class = Courseserializer
+    permission_classes = [IsAdminUser]
+
+    def retrieve(self, request, *args, **kwargs):
+        course = Course.objects.get(pk=kwargs['pk'])
+        students = course.students.all()
+        student_data = [{"id": s.id, "name": s.name} for s in students]
+        return Response({"students": student_data})
